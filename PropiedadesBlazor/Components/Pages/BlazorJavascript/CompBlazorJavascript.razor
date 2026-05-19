@@ -1,0 +1,36 @@
+﻿@page "/blazor-javascript"
+@inject IJSRuntime JsRuntime
+
+<h3>CompBlazorJavascript</h3>
+
+<div class="row mt-4"><!--mt = margin top-->
+    <div class="col-4">
+        <button class="btn btn-secondary" @onclick="(() => DemoConfirmacion(MensajeConfirmacion))"><!--al hacer click Llamamos al metodo "DemoConfirmacion, el cual recibe la propiedad/variabel "MensajeConfirmacion" -->
+            Demo Botón Confirmar
+        </button>
+    </div>
+</div>
+
+
+
+<div class="row">
+    @if(ConfirmarResultado == true)
+    {
+        <p>Confirmación Hecha!</p>
+    }
+    else
+    {
+        <p>Confirmación Pendiente</p>
+    }
+</div>
+
+@code {
+    private string MensajeConfirmacion = "Esta seguro de dar click?"; //variable/Propiedad privada para que solo se pueda acceder desde esta clase
+
+    private bool ConfirmarResultado { get; set; }//variable(propiedad booleana (t/f) 
+
+    private async Task DemoConfirmacion(string mensaje) //aqui definimos el metodo "DemoConfirmacion", este metodo recibe un parametro o variable string que le pusimos que se llame "mensaje"
+    {
+        ConfirmarResultado = await JsRuntime.InvokeAsync<bool>("confirm", mensaje);
+    }
+}

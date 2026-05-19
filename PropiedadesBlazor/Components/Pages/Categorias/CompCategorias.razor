@@ -1,0 +1,75 @@
+﻿@page "/categorias"
+@using PropiedadesBlazor.Modelos.DTO
+@using PropiedadesBlazor.Repositorio
+@using PropiedadesBlazor.Repositorio.IRepositorio
+@inject ICategoriaRepositorio CategoriaRepositorio
+
+<h1 class="text-center">Categorias</h1>
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-7">
+                <h4 class="card-title text-dark">Lista de Categorías</h4>
+            </div>
+            <div class="col-3 offset-2">
+                <NavLink href="crear-categoria" class="btn btn-primary"><i class="bi bi-bookmark-plus-fill"</i>&nbsp; Nueva Categoria</NavLink><!--"&nbsp;" es para generar un espacio en horizontal en html-->
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--Si existe por lo menos un registro en la tabla categoria-->
+                @if (categoriaDTO.Count() > 0)
+                {
+                    foreach (var categoria in categoriaDTO)
+                    {
+                        <tr>
+                            <td>@categoria.Id</td>
+                            <td>@categoria.NombreCategoria</td>
+                            <td>@categoria.Descripcion</td>
+                            <td>
+                                <NavLink href="@($"editar-categoria/{categoria.Id}")" class="btn btn-success"><i class="bi bi-gear-fill"></i>&nbsp; Editar</NavLink>
+                                <button class="btn btn-danger" @onclick="() => ManejadorOnBorrar(categoria.Id)"><i class="bi bi-trash-fill"></i>&nbsp; Borrar</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">No hay registros</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+@code {
+    private IEnumerable<CategoriaDTO> categoriaDTO { get; set; } = new List<CategoriaDTO>(); //Creamos una propiedad/modelo de tipo IEnumerable para que traiga a modo de lista lo que haya en "CategoriaDTO" y lo llamamos "categoriaDTO"
+
+
+    protected override async Task OnInitializedAsync() //llamamos al metodo OnInitializedAsync
+    {
+        categoriaDTO = await CategoriaRepositorio.GetAllCategorias();
+    }
+
+    private async Task ManejadorOnBorrar(int categoriaId)//recibe el Id de la categoria, para que reciba el Id el cual se va a borrar
+    {
+        
+    }
+}

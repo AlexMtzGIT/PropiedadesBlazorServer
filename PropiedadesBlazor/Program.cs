@@ -6,6 +6,8 @@ using PropiedadesBlazor.Components;
 using PropiedadesBlazor.Components.Account;
 using PropiedadesBlazor.Data;
 using AutoMapper;
+using PropiedadesBlazor.Repositorio.IRepositorio;
+using PropiedadesBlazor.Repositorio;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +43,9 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+//Agregar servicios(CategoriaRepositorio)
+builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>(); //primero se añade la interfaz (ICategoriaRepositorio), luego la clase que implementa esa interfaz (CategoriaRepositorio)
 
 var app = builder.Build();
 
